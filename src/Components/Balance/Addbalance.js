@@ -19,7 +19,7 @@ function AddBalance() {
     const handleAddBalance = async (e) => {
         e.preventDefault();
         try {
-            const response = await axiosinstance.post('/addBalance', { id, amount });
+            const response = await axiosinstance.post('/add', { id, amount });
             setMessage(`Balance added successfully. New balance: ${response.data.balance}`);
         } catch (error) {
             console.error("Error adding balance", error);

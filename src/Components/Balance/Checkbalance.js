@@ -14,11 +14,17 @@ function CheckBalance() {
     const handleCheckBalance = async (e) => {
         e.preventDefault();
         try {
-            const response = await axiosinstance.get('/checkbalance', {
-                data: { id: userId },
+            const response = await axiosinstance.get(`/check`, {
+                params: { id: userId }
             });
-            setBalance(response.data);
-            setMessage(`The balance for User ID ${userId} is: ${response.data}`);
+            const userBalance = response.data; // Expecting a direct double value
+            
+            if (userBalance !== undefined) {
+                setBalance(userBalance);
+                setMessage(`The balance for User ID ${userId} is: $${userBalance}`);
+            } else {
+                setMessage("Balance information not available for this User ID.");
+            }
         } catch (error) {
             console.error("Error fetching balance", error);
             setMessage("Failed to fetch balance. Please check the user ID and try again.");
@@ -30,7 +36,7 @@ function CheckBalance() {
             <div className="row">
                 <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
                     <h2 className="text-center m-4">Check Account Balance</h2>
-                    {message && <p className="text-center">{message}</p>}
+                    {message && <p className="text-center alert alert-info">{message}</p>}
                     
                     <form onSubmit={handleCheckBalance}>
                         <div className="mb-3">
